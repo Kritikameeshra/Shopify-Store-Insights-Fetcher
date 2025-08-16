@@ -1,6 +1,11 @@
 // Global variables
 let currentResults = null;
-const API_BASE_URL = 'http://localhost:8000';
+
+// Detect API base URL (Render in production, localhost for dev)
+const API_BASE_URL =
+    window.location.hostname.includes("localhost") || window.location.hostname.includes("127.0.0.1")
+        ? "http://localhost:8000"
+        : "https://shopify-store-insights-fetcher-bkmc.onrender.com";
 
 // DOM elements
 const elements = {
@@ -29,7 +34,7 @@ const elements = {
 };
 
 // Initialize the application
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     initializeApp();
     setupEventListeners();
     checkServerStatus();
@@ -619,3 +624,4 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
