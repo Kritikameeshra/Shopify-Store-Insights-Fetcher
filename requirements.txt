@@ -1,0 +1,16 @@
+# Shopify Store Insights Fetcher - Dependencies
+# Developer: Kritika Kumari Mishra
+
+fastapi
+uvicorn
+requests
+beautifulsoup4
+lxml
+pydantic
+python-multipart
+aiohttp
+google-generativeai
+python-dotenv
+mysql-connector-python
+sqlalchemy
+pymysql

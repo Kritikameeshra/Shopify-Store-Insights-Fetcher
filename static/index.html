@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopify Store Insights Fetcher</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-store"></i>
+                    <h1>Shopify Insights Fetcher</h1>
+                </div>
+                <div class="header-info">
+                    <span class="status-indicator" id="statusIndicator">
+                        <i class="fas fa-circle"></i>
+                        <span id="statusText">Connecting...</span>
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Input Section -->
+            <section class="input-section">
+                <div class="card">
+                    <h2><i class="fas fa-search"></i> Fetch Store Insights</h2>
+                    <p class="description">Enter a Shopify store URL to extract comprehensive insights including products, policies, FAQs, and more.</p>
+                    
+                    <form id="insightsForm" class="form">
+                        <div class="input-group">
+                            <label for="websiteUrl">Shopify Store URL</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-link"></i>
+                                <input 
+                                    type="url" 
+                                    id="websiteUrl" 
+                                    name="websiteUrl" 
+                                    placeholder="https://example.myshopify.com"
+                                    required
+                                >
+                            </div>
+                        </div>
+                        
+                        <div class="button-group">
+                            <button type="submit" class="btn btn-primary" id="fetchBtn">
+                                <i class="fas fa-download"></i>
+                                <span>Fetch Insights</span>
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="clearBtn">
+                                <i class="fas fa-trash"></i>
+                                <span>Clear Results</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Quick Test URLs -->
+                    <div class="quick-tests">
+                        <h3>Quick Test URLs</h3>
+                        <div class="test-urls">
+                            <button class="test-url-btn" data-url="https://memy.co.in">
+                                <i class="fas fa-tshirt"></i>
+                                Me & My (Fashion)
+                            </button>
+                            <button class="test-url-btn" data-url="https://hairoriginals.com">
+                                <i class="fas fa-spa"></i>
+                                Hair Originals (Beauty)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loading Section -->
+            <section class="loading-section" id="loadingSection" style="display: none;">
+                <div class="card">
+                    <div class="loading-content">
+                        <div class="spinner"></div>
+                        <h3>Fetching Insights...</h3>
+                        <p>This may take a few moments. We're extracting comprehensive data from the store.</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="card">
+                    <div class="results-header">
+                        <h2><i class="fas fa-chart-bar"></i> Extracted Insights</h2>
+                        <div class="results-actions">
+                            <button class="btn btn-outline" id="exportBtn">
+                                <i class="fas fa-download"></i>
+                                Export JSON
+                            </button>
+                            <button class="btn btn-outline" id="copyBtn">
+                                <i class="fas fa-copy"></i>
+                                Copy Results
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="summary-cards" id="summaryCards">
+                        <!-- Summary cards will be populated here -->
+                    </div>
+
+                    <!-- Detailed Results -->
+                    <div class="detailed-results">
+                        <div class="tabs">
+                            <button class="tab-btn active" data-tab="overview">
+                                <i class="fas fa-eye"></i>
+                                Overview
+                            </button>
+                            <button class="tab-btn" data-tab="products">
+                                <i class="fas fa-box"></i>
+                                Products
+                            </button>
+                            <button class="tab-btn" data-tab="policies">
+                                <i class="fas fa-file-contract"></i>
+                                Policies
+                            </button>
+                            <button class="tab-btn" data-tab="faqs">
+                                <i class="fas fa-question-circle"></i>
+                                FAQs
+                            </button>
+                            <button class="tab-btn" data-tab="contact">
+                                <i class="fas fa-address-book"></i>
+                                Contact
+                            </button>
+                            <button class="tab-btn" data-tab="social">
+                                <i class="fas fa-share-alt"></i>
+                                Social
+                            </button>
+                            <button class="tab-btn" data-tab="llm">
+                                <i class="fas fa-brain"></i>
+                                LLM Insights
+                            </button>
+                            <button class="tab-btn" data-tab="raw">
+                                <i class="fas fa-code"></i>
+                                Raw JSON
+                            </button>
+                        </div>
+
+                        <div class="tab-content">
+                            <!-- Overview Tab -->
+                            <div class="tab-pane active" id="overview">
+                                <div class="overview-content" id="overviewContent">
+                                    <!-- Overview content will be populated here -->
+                                </div>
+                            </div>
+
+                            <!-- Products Tab -->
+                            <div class="tab-pane" id="products">
+                                <div class="products-content" id="productsContent">
+                                    <!-- Products content will be populated here -->
+                                </div>
+                            </div>
+
+                            <!-- Policies Tab -->
+                            <div class="tab-pane" id="policies">
+                                <div class="policies-content" id="policiesContent">
+                                    <!-- Policies content will be populated here -->
+                                </div>
+                            </div>
+
+                            <!-- FAQs Tab -->
+                            <div class="tab-pane" id="faqs">
+                                <div class="faqs-content" id="faqsContent">
+                                    <!-- FAQs content will be populated here -->
+                                </div>
+                            </div>
+
+                            <!-- Contact Tab -->
+                            <div class="tab-pane" id="contact">
+                                <div class="contact-content" id="contactContent">
+                                    <!-- Contact content will be populated here -->
+                                </div>
+                            </div>
+
+                            <!-- Social Tab -->
+                            <div class="tab-pane" id="social">
+                                <div class="social-content" id="socialContent">
+                                    <!-- Social content will be populated here -->
+                                </div>
+                            </div>
+
+                            <!-- LLM Insights Tab -->
+                            <div class="tab-pane" id="llm">
+                                <div class="llm-content" id="llmContent">
+                                    <!-- LLM insights content will be populated here -->
+                                </div>
+                            </div>
+
+                            <!-- Raw JSON Tab -->
+                            <div class="tab-pane" id="raw">
+                                <div class="raw-content">
+                                    <pre id="rawJson"></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Error Section -->
+            <section class="error-section" id="errorSection" style="display: none;">
+                <div class="card error-card">
+                    <div class="error-content">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Error Occurred</h3>
+                        <p id="errorMessage">An error occurred while fetching insights.</p>
+                        <button class="btn btn-primary" onclick="hideError()">
+                            <i class="fas fa-redo"></i>
+                            Try Again
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2025 Shopify Store Insights Fetcher. Built with ❤️ by Kritika Kumari Mishra using FastAPI, HTML, CSS & JavaScript.</p>
+                <div class="footer-links">
+                    <a href="http://localhost:8000/docs" target="_blank">
+                        <i class="fas fa-book"></i>
+                        API Docs
+                    </a>
+                    <a href="http://localhost:8000/health" target="_blank">
+                        <i class="fas fa-heartbeat"></i>
+                        Health Check
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
