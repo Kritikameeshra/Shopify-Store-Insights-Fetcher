@@ -51,7 +51,7 @@ python main.py
 ## 🏗️ Project Structure
 
 ```
-📁 Kritika/
+📁 Shopify Store Insights Fetcher/
 ├── 🐍 main.py                    # FastAPI application entry point
 ├── 🔧 shopify_insights_fetcher.py # Main orchestrator class
 ├── 🤖 llm_processor.py           # Google Gemini integration
@@ -176,3 +176,4 @@ The application is now fully functional and ready for use. Simply run `python ma
 
 
 **Built with ❤️ by Kritika Kumari Mishra using FastAPI, Python, and Google Gemini** 
+
