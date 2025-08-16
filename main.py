@@ -98,4 +98,5 @@ async def health_check():
     return {"status": "healthy", "service": "Shopify Insights Fetcher"}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    import uvicorn
+    uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)
