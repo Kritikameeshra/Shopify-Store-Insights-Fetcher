@@ -96,9 +96,3 @@ async def fetch_shopify_insights(request: WebsiteRequest):
 async def health_check():
     """Health check endpoint for Render"""
     return {"status": "healthy", "service": "Shopify Insights Fetcher"}
-
-
-if __name__ == "__main__":
-    import uvicorn
-    # Render requires 0.0.0.0 and dynamic $PORT
-    uvicorn.run("main:app", host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
