@@ -53,9 +53,9 @@ class BrandInsightsResponse(BaseModel):
     message: Optional[str] = None
 
 
-@app.get("/")
+@app.api_route("/", methods=["GET", "HEAD"])
 async def root():
-    """Serve the main GUI page"""
+    """Serve the main GUI page or API info"""
     if os.path.exists("static/index.html"):
         return FileResponse("static/index.html")
     return {"message": "Shopify Store Insights Fetcher API", "version": "1.0.0"}
@@ -96,3 +96,9 @@ async def fetch_shopify_insights(request: WebsiteRequest):
 async def health_check():
     """Health check endpoint for Render"""
     return {"status": "healthy", "service": "Shopify Insights Fetcher"}
+
+
+if __name__ == "__main__":
+    import uvicorn
+    # Use 0.0.0.0 for Render, no reload in production
+    uvicorn.run(app, host="0.0.0.0", port=8000)
