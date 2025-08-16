@@ -4,9 +4,6 @@
 
 A comprehensive Python application that extracts detailed insights from Shopify stores without using the official Shopify API. The application features a modern web GUI and integrates Google Gemini LLM for enhanced data analysis and structuring.
 
-## ✅ Project Status: **COMPLETED**
-
-All mandatory and bonus requirements have been successfully implemented and tested.
 
 ## 🚀 Quick Start
 
@@ -176,5 +173,6 @@ The application provides a comprehensive solution for extracting and analyzing S
 ## 🚀 Ready to Use!
 
 The application is now fully functional and ready for use. Simply run `python main.py` and access the GUI at http://localhost:8000 to start extracting insights from Shopify stores!
+
 
 **Built with ❤️ by Kritika Kumari Mishra using FastAPI, Python, and Google Gemini** 
