@@ -7,16 +7,16 @@ Description: A comprehensive Python application that extracts detailed insights
 from Shopify stores without using the official Shopify API.
 """
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, HttpUrl
 from typing import Optional, Dict, Any
-import uvicorn
-from shopify_insights_fetcher import ShopifyInsightsFetcher
 import logging
 import os
+
+from shopify_insights_fetcher import ShopifyInsightsFetcher
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -37,12 +37,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount static files
+# Mount static files if exists
 if os.path.exists("static"):
     app.mount("/static", StaticFiles(directory="static"), name="static")
 
+
 class WebsiteRequest(BaseModel):
     website_url: HttpUrl
+
 
 class BrandInsightsResponse(BaseModel):
     success: bool
@@ -50,14 +52,14 @@ class BrandInsightsResponse(BaseModel):
     error: Optional[str] = None
     message: Optional[str] = None
 
-@app.api_route("/", methods=["GET", "HEAD"])
-async def root(request: Request):
-    """Serve the main GUI page or handle health check HEAD"""
-    if request.method == "HEAD":
-        return {"status": "ok"}
+
+@app.get("/")
+async def root():
+    """Serve the main GUI page"""
     if os.path.exists("static/index.html"):
         return FileResponse("static/index.html")
     return {"message": "Shopify Store Insights Fetcher API", "version": "1.0.0"}
+
 
 @app.post("/fetch-insights", response_model=BrandInsightsResponse)
 async def fetch_shopify_insights(request: WebsiteRequest):
@@ -66,19 +68,22 @@ async def fetch_shopify_insights(request: WebsiteRequest):
     """
     try:
         logger.info(f"Fetching insights for: {request.website_url}")
-        
+
+        # Initialize the fetcher
         fetcher = ShopifyInsightsFetcher()
+
+        # Fetch insights
         insights = await fetcher.fetch_store_insights(str(request.website_url))
-        
+
         return BrandInsightsResponse(
             success=True,
             data=insights,
             message="Insights fetched successfully"
         )
-        
+
     except Exception as e:
         logger.error(f"Error fetching insights: {str(e)}")
-        
+
         if "404" in str(e) or "not found" in str(e).lower():
             raise HTTPException(status_code=404, detail="Website not found")
         elif "401" in str(e) or "unauthorized" in str(e).lower():
@@ -86,9 +91,14 @@ async def fetch_shopify_insights(request: WebsiteRequest):
         else:
             raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
+
 @app.get("/health")
 async def health_check():
+    """Health check endpoint for Render"""
     return {"status": "healthy", "service": "Shopify Insights Fetcher"}
 
+
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("PORT", 8000)))
+    import uvicorn
+    # Render requires 0.0.0.0 and dynamic $PORT
+    uvicorn.run("main:app", host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
